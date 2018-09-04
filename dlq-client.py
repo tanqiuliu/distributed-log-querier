@@ -10,8 +10,11 @@ if __name__ == "__main__":
     filename = sys.argv[3]
 
     s = socket.socket()
-    s.connect((node, SERVER_PORT))
-    m = ' '.join([pattern, filename])
-    s.send(m.encode())
-    rtn_msg = s.recv(BUF_SIZE)
-    print(rtn_msg.decode())
+    try:
+        s.connect((node, SERVER_PORT))
+        m = ' '.join([pattern, filename])
+        s.send(m.encode())
+        rtn_msg = s.recv(BUF_SIZE)
+        print(rtn_msg.decode())
+    except ConnectionRefusedError as e:
+        print(str(e) + ': ' + node)

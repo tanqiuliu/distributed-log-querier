@@ -1,5 +1,6 @@
 import socket
 import sys
+import dlq-querier
 
 PORT = 23333
 BUF_SIZE = 4096
