@@ -1,12 +1,9 @@
 import socket
 import sys
-import dlq-querier
+from dlq_querier import doQuery
 
-PORT = 23333
+PORT = 12345
 BUF_SIZE = 4096
-
-def query(pattern, filename):
-    print("query function called: %s, %s" %(pattern, filename))
 
 def parser_msg(msg):
     msg_d = msg.decode()
@@ -24,9 +21,9 @@ if __name__ == "__main__":
         msg = c.recv(BUF_SIZE)
         pattern, filename = parser_msg(msg)
         # do query
-        query(pattern, filename)
+        query_result = doQuery(pattern, filename)
         rtn_msg = 'receipt from %s to %s' %(socket.gethostname(), c.getpeername())
-        c.send(rtn_msg.encode())
+        c.sendall(query_result.encode())
         c.close()
 
 

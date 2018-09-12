@@ -1,7 +1,7 @@
 import socket
 import sys
 
-SERVER_PORT = 23333
+SERVER_PORT = 12345
 BUF_SIZE = 4096
 
 if __name__ == "__main__":
