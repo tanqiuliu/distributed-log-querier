@@ -3,7 +3,7 @@ import sys
 
 if __name__ == "__main__":
 	vmNum = sys.argv[1]
-	HOST = 'cs425-g45-' + vmNum + '.cs.illinois.edu'
+	HOST = 'fa18-cs425-g45-' + vmNum + '.cs.illinois.edu'
 	print HOST
 	PORT = 12345
 	print PORT
