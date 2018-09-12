@@ -1,6 +1,7 @@
 import socket
 import sys
 from dlq_querier import doQuery
+from Socket import *
 
 PORT = 12345
 BUF_SIZE = 4096
@@ -12,18 +13,17 @@ def parser_msg(msg):
     return pattern, filename
 
 if __name__ == "__main__":
-    s = socket.socket()
+    s = TCPSocket()
     s.bind(('', PORT))
     s.listen(10)
 
     while True:
         c, addr = s.accept()
-        msg = c.recv(BUF_SIZE)
+        msg = c.sock.recv(BUF_SIZE)
         pattern, filename = parser_msg(msg)
         # do query
         query_result = doQuery(pattern, filename)
-        rtn_msg = 'receipt from %s to %s' %(socket.gethostname(), c.getpeername())
-        c.sendall(query_result.encode())
+        c.send(query_result.encode())
         c.close()
 
 

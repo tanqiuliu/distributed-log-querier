@@ -2,6 +2,7 @@ import re
 import sys
 
 def doQuery(pattern, filename):
+    print("doQuery is called")
     pattern2 = pattern
     if pattern2[0:2] != '.*':
         pattern2 = '.*' + pattern2
@@ -20,7 +21,6 @@ def doQuery(pattern, filename):
         if m:
             output = str(idx) + ': ' + line
             result.append(output)
-            print(output)
     f.close()
     return '\n'.join(result)
 
