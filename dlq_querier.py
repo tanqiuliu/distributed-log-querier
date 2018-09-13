@@ -25,7 +25,7 @@ def doQuery(pattern, filename):
     return '\n'.join(result)
 
 def doQuery2(pattern, filename):
-    print("doQuery2 is called")
+    # print("doQuery2 is called")
     pattern2 = pattern
     if pattern2[0:2] != '.*':
         pattern2 = '.*' + pattern2
