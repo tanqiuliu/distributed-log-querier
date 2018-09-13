@@ -1,6 +1,6 @@
 import socket
 import sys
-from dlq_querier import doQuery
+from dlq_querier import *
 from Socket import *
 
 PORT = 12345
@@ -22,8 +22,9 @@ if __name__ == "__main__":
         msg = c.sock.recv(BUF_SIZE)
         pattern, filename = parser_msg(msg)
         # do query
-        query_result = doQuery(pattern, filename)
-        c.send(query_result.encode())
+        #query_result = doQuery(pattern, filename)
+        for output in doQuery2(pattern, filename):
+            c.send(output.encode())
         c.close()
 
 
