@@ -1,0 +1,13 @@
+[
+    {
+        "name":"localhost",
+        "ip":"127.0.0.1",
+        "logfile":"/Users/tanqiu_liu/Projects/distributed-log-querier/vm1.log"
+    },
+    
+    {
+        "name":"aws-ec2",
+        "ip":"18.218.231.95",
+        "logfile":"/home/ubuntu/Project/distributed-log-querier/vm1.log"
+    }
+]

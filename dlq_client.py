@@ -2,55 +2,56 @@ import socket
 import sys
 from Socket import *
 from functools import reduce
+import json
 
 SERVER_PORT = 12345
 MSGLEN = 4096
 
 if __name__ == "__main__":
-    # node = sys.argv[1]
     pattern = sys.argv[1]
-    filename = sys.argv[2]
 
-    # nodes = ['127.0.0.1', '18.218.231.95']
-    nodes = {'localhost':'127.0.0.1' , 'aws-ec2':'18.218.231.95'}
-    socks = {}
+    with open('./conf.json','r') as handle:
+        nodes = json.loads(handle.read())
+
     for node in nodes:
+        node['buffer'] = ''
+        node['complete'] = False
+        node['count'] = 0
         try:
-            socks[node] = TCPSocket()
-            s = socks[node]
-            s.connect((nodes[node], SERVER_PORT))
-            m = ' '.join([pattern, filename])
-            s.send(m.encode())
+            node['sock'] = TCPSocket()
+            node['sock'].connect((node['ip'], SERVER_PORT))
+            m = ' '.join([pattern, node['logfile']])
+            node['sock'].send(m.encode())
+            node['status'] = True
         except ConnectionRefusedError as e:
-            print(str(e) + ': ' + nodes[node])
-            nodes[node] = None
-            if node in socks:
-                socks[node] = None
-    buffers = {node:'' for node in nodes if nodes[node] != None}
-    finish_flag = {node:False for node in nodes if nodes[node] != None}
-    counts = {node:0 for node in nodes if nodes[node] != None}
+            print(str(e) + ': ' + node['name'] + ' ' + node['ip'])
+            node['status'] = False
+            node['complete'] = True
+
     while True:
         for node in nodes:
-            if nodes[node] != None:
+            if node['status'] and not node['complete']:
                 try:
-                    if socks[node].activityDetected(5):
-                        chunk = socks[node].recv(MSGLEN).decode()
+                    if node['sock'].activityDetected(5):
+                        chunk = node['sock'].recv(MSGLEN).decode()
                         if chunk == '':
-                            finish_flag[node] = True
+                            node['complete'] = True
                             continue
-                        buffers[node] += chunk
-                        records = buffers[node].split('\n')
+                        node['buffer'] += chunk
+                        records = node['buffer'].split('\n')
                         for i in range(len(records) - 1):
-                            print(nodes[node] + ': ' + records[i])
-                            counts[node] += 1
-                        buffers[node] = records[-1]
+                            print(node['name'] + ': ' + records[i])
+                            node['count'] += 1
+                        node['buffer'] = records[-1]
                     else:
-                        finish_flag[node] = True
+                        node['complete'] = True
                         continue
                 except ConnectionRefusedError as e:
-                    print(str(e) + ': ' + node)
-                    finish_flag[node] = True
+                    print(str(e) + ': ' + node['name'])
+                    node['status'] = False
+                    node['complete'] = True
         #print(finish_flag)
-        if reduce((lambda x,y:x or y), [finish_flag[node] for node in finish_flag]):
-            print(counts)
+        if reduce((lambda x,y:x and y), [node['complete'] for node in nodes]):
+            for node in nodes:
+                print(node)
             break
