@@ -3,12 +3,15 @@ import sys
 from Socket import *
 from functools import reduce
 import json
+import copy
 
 SERVER_PORT = 12345
 MSGLEN = 4096
 
 if __name__ == "__main__":
-    pattern = sys.argv[1]
+    pattern = sys.argv[1:]
+	pattern.insert(0, 'grep')
+	pattern.insert(1, '-n')
 
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
@@ -20,7 +23,9 @@ if __name__ == "__main__":
         try:
             node['sock'] = TCPSocket()
             node['sock'].connect((node['ip'], SERVER_PORT))
-            m = ' '.join([pattern, node['logfile']])
+			patterncopy = copy.deepcopy(pattern)
+			patterncopy.append(node['logfile'])
+            m = ' '.join(patterncopy)
             node['sock'].send(m.encode())
             node['status'] = True
         except ConnectionRefusedError as e:

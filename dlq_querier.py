@@ -46,6 +46,26 @@ def doQuery2(pattern, filename):
     f.close()
 
 
+def callGrepOnVM(grepCall):
+	try:
+		output = subprocess.check_output(grepCall).strip()
+		afterGrepCount = copy.deepcopy(grepCall)
+		afterGrepCount.insert(1, '-c')
+		countOutput = subprocess.check_output(afterGrepCount).strip()
+		output = output.split("\n")
+		output.append(countOutput)
+		for i in range(0, len(output)):
+			yield output[i]
+	except subprocess.CalledProcessError as e:
+		if e.returncode  == 1:
+			output = "Return non-zero exit status 1, which means the file has no matches found with pattern and options"
+			return output
+		elif e.returncode == 2:
+			output = "No such file or directory error"
+			return output
+
+
+
 if __name__ == '__main__':
     pattern = sys.argv[1]
     filename = sys.argv[2]

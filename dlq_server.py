@@ -12,6 +12,11 @@ def parser_msg(msg):
     filename = msg_d.split(' ')[1]
     return pattern, filename
 
+def parser_grep(grepcmd):
+	grepcmd_d = grepcmd.decode(grepcmd):
+	return grepcmd_d
+								
+
 if __name__ == "__main__":
     s = TCPSocket()
     s.bind(('', PORT))
@@ -20,12 +25,12 @@ if __name__ == "__main__":
     while True:
         c, addr = s.accept()
         msg = c.sock.recv(BUF_SIZE)
-        pattern, filename = parser_msg(msg)
+        grep_cmd = parser_grep(msg)
         # do query
         #query_result = doQuery(pattern, filename)
-        for output in doQuery2(pattern, filename):
+        for output in callGrepOnVM(grep_cmd):
             c.send(output.encode())
-        c.close()
+        break
 
 
 
