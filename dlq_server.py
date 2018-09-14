@@ -28,7 +28,7 @@ if __name__ == "__main__":
         msg = c.sock.recv(BUF_SIZE)
         grep_cmd = parser_grep(msg)
         # do query
-		print(grep_cmd)
+        print(grep_cmd)
         #query_result = doQuery(pattern, filename)
         for output in callGrepOnVM(grep_cmd):
             c.send(output.encode())
