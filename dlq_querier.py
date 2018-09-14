@@ -49,7 +49,7 @@ def doQuery2(pattern, filename):
 
 
 def callGrepOnVM(grepCall):
-	pattern = grepCall.decode().split(" ")
+	pattern = grepCall
 	pattern.insert(0,'grep')
 	pattern.insert(1,'-n')
 
@@ -58,11 +58,15 @@ def callGrepOnVM(grepCall):
 	try:
 		print("Success")
 		print(pattern)
-		output = subprocess.check_output(pattern,shell=True).strip()
+		output = subprocess.check_output(pattern,shell=True).decode('utf-8').strip()
+		print("we reached here")
 		print(output)
+		print(type(output))
+		output = str(output)
+		print(type(output))
 		afterGrepCount = copy.deepcopy(pattern)
 		afterGrepCount.insert(1, '-c')
-		countOutput = subprocess.check_output(afterGrepCount,shell=True).strip()
+		countOutput = subprocess.check_output(afterGrepCount, shell=True).decode('utf-8').strip()
 		output = output.split("\n")
 		output.append(countOutput)
 		for i in range(0, len(output)):
@@ -80,7 +84,7 @@ def callGrepOnVM(grepCall):
 
 
 if __name__ == '__main__':
-    pattern = sys.argv[1]
-    filename = sys.argv[2]
-    for output in doQuery2(pattern, filename):
-        print(output)
+	grepCall = sys.argv[1:]
+	for output in callGrepOnVM(grepCall):
+		print(output)
+	
