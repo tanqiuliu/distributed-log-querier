@@ -51,7 +51,7 @@ def doQuery2(pattern, filename):
 def callGrepOnVM(grepCall):
 	pattern = grepCall.split(" ")
 	pattern.insert(0,'grep')
-    pattern.insert(1,'-n')
+	pattern.insert(1,'-n')
 
 	try:
 		output = subprocess.check_output(pattern,shell=True).strip()
