@@ -57,6 +57,7 @@ def callGrepOnVM(grepCall):
 
 	try:
 		print("Success")
+		print(pattern)
 		output = subprocess.check_output(pattern,shell=True).strip()
 		print(output)
 		afterGrepCount = copy.deepcopy(pattern)
