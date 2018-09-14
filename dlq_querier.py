@@ -1,5 +1,7 @@
 import re
 import sys
+import subprocess
+import copy
 
 def doQuery(pattern, filename):
     #print("doQuery is called")
