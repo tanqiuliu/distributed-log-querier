@@ -49,7 +49,7 @@ def doQuery2(pattern, filename):
 
 
 def callGrepOnVM(grepCall):
-	pattern = grepCall.split(" ")
+	pattern = grepCall.decode().split(" ")
 	pattern.insert(0,'grep')
 	pattern.insert(1,'-n')
 
