@@ -65,7 +65,7 @@ def callGrepOnVM(grepCall):
 		output = str(output)
 		print(type(output))
 		afterGrepCount = copy.deepcopy(pattern)
-		afterGrepCount.insert(1, '-c')
+		afterGrepCount.insert(1, u'-c')
 		countOutput = subprocess.check_output(afterGrepCount).decode('utf-8').strip()
 		output = output.split("\n")
 		output.append(countOutput)
