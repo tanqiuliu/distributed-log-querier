@@ -43,6 +43,7 @@ if __name__ == "__main__":
                             continue
                         node['buffer'] += chunk
                         records = node['buffer'].split('\r')
+                        print(records)
                         for i in range(len(records) - 1):
                             print(node['name'] + ': ' + records[i])
                             node['count'] += 1
