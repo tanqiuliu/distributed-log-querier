@@ -50,10 +50,10 @@ def doQuery2(pattern, filename):
 
 def callGrepOnVM(grepCall):
 	try:
-		output = subprocess.check_output(grepCall).strip()
+		output = subprocess.check_output(grepCall,shell=True).strip()
 		afterGrepCount = copy.deepcopy(grepCall)
 		afterGrepCount.insert(1, '-c')
-		countOutput = subprocess.check_output(afterGrepCount).strip()
+		countOutput = subprocess.check_output(afterGrepCount,shell=True).strip()
 		output = output.split("\n")
 		output.append(countOutput)
 		for i in range(0, len(output)):
