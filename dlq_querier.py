@@ -53,7 +53,10 @@ def callGrepOnVM(grepCall):
 	pattern.insert(0,'grep')
 	pattern.insert(1,'-n')
 
+	print("In the middle of calling grep on a vm")
+
 	try:
+		print("Success")
 		output = subprocess.check_output(pattern,shell=True).strip()
 		print(output)
 		afterGrepCount = copy.deepcopy(pattern)
@@ -65,9 +68,11 @@ def callGrepOnVM(grepCall):
 			yield output[i]
 	except subprocess.CalledProcessError as e:
 		if e.returncode  == 1:
+			print("error code 1")			
 			output = "Return non-zero exit status 1, which means the file has no matches found with pattern and options"
 			yield output
 		elif e.returncode == 2:
+			print("error code 2")
 			output = "No such file or directory error"
 			yield output
 
