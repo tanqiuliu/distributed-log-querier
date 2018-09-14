@@ -10,6 +10,7 @@ MSGLEN = 4096
 
 if __name__ == "__main__":
     pattern = sys.argv[1:]
+    errorholder = []
 
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
@@ -27,7 +28,7 @@ if __name__ == "__main__":
             node['sock'].send(m.encode())
             node['status'] = True
         except ConnectionRefusedError as e:
-            print(str(e) + ': ' + node['name'] + ' ' + node['ip'])
+            errorholder.append(str(e) + ': ' + node['name'] + ' ' + node['ip'])
             node['status'] = False
             node['complete'] = True
 
@@ -38,7 +39,6 @@ if __name__ == "__main__":
                     if node['sock'].activityDetected(5):
                         chunk = node['sock'].recv(MSGLEN).decode()
                         if chunk == '':
-                            print("Finished receiving stuff")
                             node['complete'] = True
                             continue
                         node['buffer'] += chunk
@@ -56,6 +56,9 @@ if __name__ == "__main__":
                     node['complete'] = True
         #print(finish_flag)
         if reduce((lambda x,y:x and y), [node['complete'] for node in nodes]):
+            for error in errorholder:
+                print(error)
             for node in nodes:
-                print(node)
+                print(node['name'] + " finished with " + str(node['count']) + " lines")
             break
+

@@ -13,7 +13,6 @@ def parser_msg(msg):
     return pattern, filename
 
 def parser_grep(grepcmd):
-	print(grepcmd)
 	grepcmd_d = grepcmd.decode('utf-8')
 	return grepcmd_d
 								

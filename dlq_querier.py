@@ -53,17 +53,9 @@ def callGrepOnVM(grepCall):
 	pattern.insert(0,u'grep')
 	pattern.insert(1,u'-n')
 
-	print("In the middle of calling grep on a vm")
-
 	try:
-		print("Success")
-		print(pattern)
 		output = subprocess.check_output(pattern).decode('utf-8').strip()
-		print("we reached here")
-		print(output)
-		print(type(output))
 		output = str(output)
-		print(type(output))
 		afterGrepCount = copy.deepcopy(pattern)
 		afterGrepCount.insert(1, u'-c')
 		countOutput = subprocess.check_output(afterGrepCount).decode('utf-8').strip()
