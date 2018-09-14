@@ -3,17 +3,5 @@
         "name":"vm1",
         "ip":"fa18-cs425-g45-01.cs.illinois.edu",
         "logfile":"/home/mp1/vm1.log"
-    },
-    
-    {
-        "name":"vm2",
-        "ip":"fa18-cs425-g45-02.cs.illinois.edu",
-        "logfile":"/home/mp1/vm2.log"
-    },
-	
-	{
-		"name":"vm3",
-        "ip":"fa18-cs425-g45-03.cs.illinois.edu",
-        "logfile":"/home/mp1/vm3.log"
-	}
+    }
 ]

@@ -59,10 +59,10 @@ def callGrepOnVM(grepCall):
 	except subprocess.CalledProcessError as e:
 		if e.returncode  == 1:
 			output = "Return non-zero exit status 1, which means the file has no matches found with pattern and options"
-			return output
+			yield output
 		elif e.returncode == 2:
 			output = "No such file or directory error"
-			return output
+			yield output
 
 
 

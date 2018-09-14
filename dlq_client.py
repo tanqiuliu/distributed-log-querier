@@ -10,8 +10,8 @@ MSGLEN = 4096
 
 if __name__ == "__main__":
     pattern = sys.argv[1:]
-	pattern.insert(0, 'grep')
-	pattern.insert(1, '-n')
+    pattern.insert(0,'grep')
+    pattern.insert(1,'-n')
 
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
@@ -23,8 +23,8 @@ if __name__ == "__main__":
         try:
             node['sock'] = TCPSocket()
             node['sock'].connect((node['ip'], SERVER_PORT))
-			patterncopy = copy.deepcopy(pattern)
-			patterncopy.append(node['logfile'])
+            patterncopy = copy.deepcopy(pattern)
+            patterncopy.append(node['logfile'])
             m = ' '.join(patterncopy)
             node['sock'].send(m.encode())
             node['status'] = True
