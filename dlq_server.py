@@ -18,8 +18,10 @@ def parser_grep(grepcmd):
 								
 
 if __name__ == "__main__":
+	vmNum = sys.argv[1]
+	host = "fa18-cs425-g45-" + str(vmNum) + ".cs.illinois.edu" 
     s = TCPSocket()
-    s.bind(('', PORT))
+    s.bind((host, PORT))
     s.listen(10)
 
     while True:
