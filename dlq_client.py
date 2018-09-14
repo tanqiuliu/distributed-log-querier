@@ -42,7 +42,7 @@ if __name__ == "__main__":
                             node['complete'] = True
                             continue
                         node['buffer'] += chunk
-                        records = node['buffer'].split('\n')
+                        records = node['buffer'].split('\r')
                         for i in range(len(records) - 1):
                             print(node['name'] + ': ' + records[i])
                             node['count'] += 1
