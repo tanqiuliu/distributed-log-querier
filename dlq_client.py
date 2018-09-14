@@ -38,6 +38,7 @@ if __name__ == "__main__":
                     if node['sock'].activityDetected(5):
                         chunk = node['sock'].recv(MSGLEN).decode()
                         if chunk == '':
+                            print("Finished receiving stuff")
                             node['complete'] = True
                             continue
                         node['buffer'] += chunk
