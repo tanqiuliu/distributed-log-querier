@@ -57,6 +57,8 @@ def callGrepOnVM(grepCall):
 		output = subprocess.check_output(pattern).decode('utf-8').strip()
 		output = str(output)
 		output = output.split("\n")
+		print(output)
+		print(len(output))
 		for i in range(0, len(output)):
 			yield output[i]
 	except subprocess.CalledProcessError as e:
