@@ -13,8 +13,8 @@ def parser_msg(msg):
     return pattern, filename
 
 def parser_grep(grepcmd):
-	grepcmd_d = grepcmd.decode(grepcmd)
-	return grepcmd_d
+	print(grepcmd)
+	return grepcmd
 								
 
 if __name__ == "__main__":

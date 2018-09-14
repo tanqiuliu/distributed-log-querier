@@ -26,7 +26,7 @@ if __name__ == "__main__":
             patterncopy = copy.deepcopy(pattern)
             patterncopy.append(node['logfile'])
             m = ' '.join(patterncopy)
-            node['sock'].send(m.encode())
+            node['sock'].send(m)
             node['status'] = True
         except ConnectionRefusedError as e:
             print(str(e) + ': ' + node['name'] + ' ' + node['ip'])
