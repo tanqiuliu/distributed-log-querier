@@ -49,9 +49,13 @@ def doQuery2(pattern, filename):
 
 
 def callGrepOnVM(grepCall):
+	pattern = grepCall.split(" ")
+	pattern.insert(0,'grep')
+    pattern.insert(1,'-n')
+
 	try:
-		output = subprocess.check_output(grepCall,shell=True).strip()
-		afterGrepCount = copy.deepcopy(grepCall)
+		output = subprocess.check_output(pattern,shell=True).strip()
+		afterGrepCount = copy.deepcopy(pattern)
 		afterGrepCount.insert(1, '-c')
 		countOutput = subprocess.check_output(afterGrepCount,shell=True).strip()
 		output = output.split("\n")

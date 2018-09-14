@@ -10,8 +10,6 @@ MSGLEN = 4096
 
 if __name__ == "__main__":
     pattern = sys.argv[1:]
-    pattern.insert(0,'grep')
-    pattern.insert(1,'-n')
 
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
