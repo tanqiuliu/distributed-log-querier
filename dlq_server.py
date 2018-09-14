@@ -14,7 +14,8 @@ def parser_msg(msg):
 
 def parser_grep(grepcmd):
 	print(grepcmd)
-	return grepcmd
+	grepcmd_d = grepcmd.decode()
+	return grepcmd_d
 								
 
 if __name__ == "__main__":
