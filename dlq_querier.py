@@ -50,8 +50,8 @@ def doQuery2(pattern, filename):
 
 def callGrepOnVM(grepCall):
 	pattern = grepCall.split(" ")
-	pattern.insert(0,'grep')
-	pattern.insert(1,'-n')
+	pattern.insert(0,u'grep')
+	pattern.insert(1,u'-n')
 
 	print("In the middle of calling grep on a vm")
 
