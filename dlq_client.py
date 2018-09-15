@@ -10,7 +10,6 @@ MSGLEN = 4096
 
 if __name__ == "__main__":
     pattern = sys.argv[1:]
-    errorholder = []
 
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
@@ -28,7 +27,6 @@ if __name__ == "__main__":
             node['sock'].send(m.encode())
             node['status'] = True
         except ConnectionRefusedError as e:
-            errorholder.append(str(e) + ': ' + node['name'] + ' ' + node['ip'])
             node['status'] = False
             node['complete'] = True
 
@@ -43,7 +41,6 @@ if __name__ == "__main__":
                             continue
                         node['buffer'] += chunk
                         records = node['buffer'].split('\r')
-                        print(records)
                         for i in range(len(records) - 1):
                             print(node['name'] + ': ' + records[i])
                             node['count'] += 1
@@ -55,11 +52,16 @@ if __name__ == "__main__":
                     print(str(e) + ': ' + node['name'])
                     node['status'] = False
                     node['complete'] = True
-        #print(finish_flag)
+
         if reduce((lambda x,y:x and y), [node['complete'] for node in nodes]):
-            for error in errorholder:
-                print(error)
             for node in nodes:
-                print(node['name'] + " finished with " + str(node['count']) + " lines")
+                if node['buffer'] != '':
+                    print(node['name'] + ': ' + node['buffer'])
+                    node['count'] += 1
+            for node in nodes:
+                if not node['status']:
+                    print(node['name'] + " encountered an error.")
+                else:
+                    print(node['name'] + " finished with " + str(node['count']) + " lines")
             break
 
