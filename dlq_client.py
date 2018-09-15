@@ -40,7 +40,7 @@ if __name__ == "__main__":
                             node['complete'] = True
                             continue
                         node['buffer'] += chunk
-                        records = node['buffer'].split('\r')
+                        records = node['buffer'].split('\n')
                         for i in range(len(records) - 1):
                             print(node['name'] + ': ' + records[i])
                             node['count'] += 1
@@ -54,10 +54,6 @@ if __name__ == "__main__":
                     node['complete'] = True
 
         if reduce((lambda x,y:x and y), [node['complete'] for node in nodes]):
-            for node in nodes:
-                if node['buffer'] != '':
-                    print(node['name'] + ': ' + node['buffer'])
-                    node['count'] += 1
             for node in nodes:
                 if not node['status']:
                     print(node['name'] + " encountered an error.")
