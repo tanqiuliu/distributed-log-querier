@@ -43,12 +43,14 @@ if __name__ == "__main__":
                             continue
                         node['buffer'] += chunk
                         records = node['buffer'].split('\r')
-                        print(records)
                         for i in range(len(records) - 1):
                             print(node['name'] + ': ' + records[i])
                             node['count'] += 1
                         node['buffer'] = records[-1]
                     else:
+                        print("This is what's left in the buffer now " + node['buffer'] + "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz")
+                        print(node['name'] + ' : ' + records[0])
+                        node['count'] += 1
                         node['complete'] = True
                         continue
                 except ConnectionRefusedError as e:
