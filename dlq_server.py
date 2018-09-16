@@ -33,7 +33,6 @@ if __name__ == "__main__":
         for output in callGrepOnVM(grep_cmd):
             c.send(output.encode())
         c.close()
-        break
         
 
 
