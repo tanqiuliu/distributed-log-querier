@@ -63,7 +63,7 @@ def callGrepOnVM(grepCall):
 			yield output[i] + '\n'
 	except subprocess.CalledProcessError as e:
 		if e.returncode  == 1:
-			break
+			yield
 		elif e.returncode == 2:
 			print("error code 2")
 			output = "No such file or directory error"
