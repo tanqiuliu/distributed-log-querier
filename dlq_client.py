@@ -8,9 +8,7 @@ import copy
 SERVER_PORT = 12345
 MSGLEN = 4096
 
-if __name__ == "__main__":
-    pattern = sys.argv[1:]
-
+def connect_to_server(pattern):
     with open('./conf.json','r') as handle:
         nodes = json.loads(handle.read())
 
@@ -60,4 +58,13 @@ if __name__ == "__main__":
                 else:
                     print(node['name'] + " finished with " + str(node['count']) + " lines")
             break
+    print(nodes)
+    return nodes
+	
+
+if __name__ == "__main__":
+    pattern = sys.argv[1:]
+    connect_to_server(pattern)
+
+    
 
