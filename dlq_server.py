@@ -32,7 +32,7 @@ if __name__ == "__main__":
         #query_result = doQuery(pattern, filename)
         for output in callGrepOnVM(grep_cmd):
             c.send(output.encode())
-        s.close()
+        c.close()
         break
         
 
