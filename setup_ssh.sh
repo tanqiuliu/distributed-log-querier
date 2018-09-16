@@ -9,7 +9,7 @@ fa18-cs425-g45-08.cs.illinois.edu \
 fa18-cs425-g45-09.cs.illinois.edu \
 fa18-cs425-g45-10.cs.illinois.edu)
 
-export USER=tanqiul2
+export USER=dchen51
 
 # for i in ${NODE[@]}
 # do 

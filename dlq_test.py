@@ -18,8 +18,17 @@ def get_vm_file_path(filename):
 def generate_string(size, charList):
 	return ''.join(random.choice(charList) for _ in range(size)) + '\r\n'
 
-#Generates a short txt/log file, somewhere under 3MB
-def generate_short_random_log():
+def generate_short_frequent_random_log():
+	f= open("mp1unittest.txt", "w+")
+	for i in range (1000):
+		f.write(generate_string(52, correctCharList))
+	f.write("1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabc\r\n")
+	for i in range (1000):
+		f.write(generate_string(52, correctCharList))
+	f.close()
+
+#Generates a short txt/log file, somewhere under 3MB where the 
+def generate_short_infrequent_random_log():
 	f= open("mp1unittest.txt", "w+")
 	f.write("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz\r\n")
 	for i in range(20):
@@ -62,7 +71,7 @@ def generate_long_random_log():
 #Creates a random short txt/log file and copies it over to the beginning directory of every VM
 def generate_random_logs_on_vms():
 	for i in range(1, 11):
-		generate_short_random_log()
+		generate_short_infrequent_random_log()
 		dir_path = os.path.dirname(os.path.realpath(__file__))
 		subprocess.call(['scp', dir_path + '/mp1unittest.txt', 'dchen51@fa18-cs425-g45-%02d.cs.illinois.edu:~/'.format(i)])
 
@@ -82,17 +91,26 @@ def check_grep_output_on_servers():
 	for i in vmNums:
 		lineCount.append(subprocess.check_output(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(i), 'grep -c -e abc /home/dchen51/mp1unittest.txt']).strip().decode('utf-8'))
 	assert(lineCount == ['5', '5', '5', '5', '5', '5', '5', '5', '5', '5'])
-	print('Passed putting files on all VMS and grepping them')	
+	print('Passed putting files on all VMS and grepping them')
+		
 
 #The client part of the client-server unit test that must be run with in conjunction with the run_multiple_servers checking one server at a time because of the password input. Checks for the specific keyword -e abc -e bca -e zazz
-def check_client_py_on_servers():
+def check_client_pattern_on_servers(pattern):
 	nodeCount = []
-	for i in range(0, 10):
-		wait = input("Please press enter once you set up the next server")
-		outputCount = connect_to_server(['-e', 'abc', '-e', 'bca', '-e', 'zazz'])[i]['count']
-		nodeCount.append(outputCount)
-	print(nodeCount)
-	assert(nodeCount == [560, 563, 564, 562, 568, 574, 573, 570, 565, 565])
+	lineCount = []
+	grepStart = 'grep -c ' + pattern + ' /home/mp1/vm'
+	print(grepStart)
+	print(pattern)
+	print(pattern.split(" "))
+	for i, vmNum in enumerate(vmNums):
+		lineCount.append(int((subprocess.check_output(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(vmNum), grepStart + str(i+1) + '.log'])).strip().decode('utf-8')))
+		print(lineCount)
+	outputCount = connect_to_server(pattern.split(" "), unittestmode=1)
+	for node in outputCount:
+		nodeCount.append(node['count'])
+	print("The line count from local greps on each vm was:")
+	print(lineCount)
+	assert(nodeCount == lineCount)
 	print("Client-Server Unit test passed")
 
 if __name__ == '__main__':
@@ -102,5 +120,5 @@ if __name__ == '__main__':
 	elif which_test == '2':
 		run_multiple_servers()
 	elif which_test == '3':
-		check_client_py_on_servers()
+		check_client_pattern_on_servers('-e abc -e bca -e zazz')
 		

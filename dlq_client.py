@@ -9,7 +9,7 @@ SERVER_PORT = 12345
 MSGLEN = 4096
 
 #Client main function that connects to a server with given HOST and PORT
-def connect_to_server(pattern, filename='./conf.json'):
+def connect_to_server(pattern, filename='./conf.json', unittestmode=0):
 	#Opens a file to see the ip to connect, the ip's name, and the path to the file we want to grep
     with open(filename,'r') as handle:
         nodes = json.loads(handle.read())
@@ -47,7 +47,8 @@ def connect_to_server(pattern, filename='./conf.json'):
                         node['buffer'] += chunk
                         records = node['buffer'].split('\n')
                         for i in range(len(records) - 1):
-                            print(node['name'] + ': ' + records[i])
+                            if unittestmode == 0:
+                                print(node['name'] + ': ' + records[i])
                             node['count'] += 1
                         node['buffer'] = records[-1]
                     else:
