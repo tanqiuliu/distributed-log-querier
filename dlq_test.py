@@ -99,12 +99,14 @@ def check_client_pattern_on_servers(pattern):
 	nodeCount = []
 	lineCount = []
 	grepStart = 'grep -c ' + pattern + ' /home/mp1/vm'
-	print(grepStart)
-	print(pattern)
-	print(pattern.split(" "))
+	print("===========================================================================================")
+	print("Running unit test on the pattern: " + pattern + " : on all vm logs")
+	print("===========================================================================================")
 	for i, vmNum in enumerate(vmNums):
-		lineCount.append(int((subprocess.check_output(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(vmNum), grepStart + str(i+1) + '.log'])).strip().decode('utf-8')))
-		print(lineCount)
+		try:
+			lineCount.append(int((subprocess.check_output(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(vmNum), grepStart + str(i+1) + '.log'])).strip().decode('utf-8')))
+		except:
+			lineCount.append(0)
 	outputCount = connect_to_server(pattern.split(" "), unittestmode=1)
 	for node in outputCount:
 		nodeCount.append(node['count'])
@@ -114,11 +116,16 @@ def check_client_pattern_on_servers(pattern):
 	print("Client-Server Unit test passed")
 
 if __name__ == '__main__':
-	which_test = input("1 for putting log files on vms, 2 for running the server unit test, 3 for running the client unit test: ")
+	which_test = input("1 very frequent pattern, 2 frequent pattern, 3 rare pattern, 4 for more regular expressions, 5 for a pattern with no matches" )
 	if which_test == '1':
-		check_grep_output_on_servers()
+		check_client_pattern_on_servers('2')
 	elif which_test == '2':
-		run_multiple_servers()
+		check_client_pattern_on_servers('300')
 	elif which_test == '3':
 		check_client_pattern_on_servers('-e abc -e bca -e zazz')
+	elif which_test == '4':
+		check_client_pattern_on_servers('-e ..00..')
+	elif which_test == '5':
+		check_client_pattern_on_servers('!')
+		
 		
