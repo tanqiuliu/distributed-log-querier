@@ -8,10 +8,14 @@ import copy
 SERVER_PORT = 12345
 MSGLEN = 4096
 
+#Client main function that connects to a server with given HOST and PORT
 def connect_to_server(pattern, filename='./conf.json'):
+	#Opens a file to see the ip to connect, the ip's name, and the path to the file we want to grep
     with open(filename,'r') as handle:
         nodes = json.loads(handle.read())
 
+	#Goes through every ip in order to try to connect an run grep on the virtual machines.  If we cannot connect we just 
+	#set it to complete with an error.  Connection with 0 lines will print out 0 lines while errors will print out error.
     for node in nodes:
         node['buffer'] = ''
         node['complete'] = False
@@ -28,6 +32,9 @@ def connect_to_server(pattern, filename='./conf.json'):
             node['status'] = False
             node['complete'] = True
 
+	#Checks to see that the server is still sending messages to the client, if so then we want to store the messages
+	#in the buffer and print them out.  Once the program is done printing everything that the servers have sent to client,
+	#it will then print if the vm encountered an error or the line count of the grep commnand.
     while True:
         for node in nodes:
             if node['status'] and not node['complete']:

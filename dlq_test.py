@@ -71,11 +71,12 @@ def run_server_on_vm(vmNum):
 	subprocess.call(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(vmNum), 'python /home/mp1/distributed-log-querier/dlq_server.py'])
 
 
-#Runs the server on vms 1-10
+#The server part of the client-server unit test that must be run first in order to get the servers started
 def run_multiple_servers():
 	for i in vmNums:
 		run_server_on_vm(i)
 
+#Unit test that puts log files on all machines with known and random lines then checks that the grep function works with the keyword on those known lines
 def check_grep_output_on_servers():
 	lineCount = []
 	for i in vmNums:
@@ -83,6 +84,7 @@ def check_grep_output_on_servers():
 	assert(lineCount == ['5', '5', '5', '5', '5', '5', '5', '5', '5', '5'])
 	print('Passed putting files on all VMS and grepping them')	
 
+#The client part of the client-server unit test that must be run with in conjunction with the run_multiple_servers checking one server at a time because of the password input. Checks for the specific keyword -e abc -e bca -e zazz
 def check_client_py_on_servers():
 	nodeCount = []
 	for i in range(0, 10):

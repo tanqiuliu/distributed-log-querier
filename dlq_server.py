@@ -12,11 +12,12 @@ def parser_msg(msg):
     filename = msg_d.split(' ')[1]
     return pattern, filename
 
+#Parses the grep options and flags from client to something readable for the server
 def parser_grep(grepcmd):
 	grepcmd_d = grepcmd.decode('utf-8')
 	return grepcmd_d
 								
-
+#Runs the server and waits for the connection to happen, then sends the output from the grep subprocess to the client.
 if __name__ == "__main__":
     s = TCPSocket()
     s.bind(('', PORT))

@@ -47,7 +47,7 @@ def doQuery2(pattern, filename):
             yield output
     f.close()
 
-
+#The grep command itself that uses subprocess to call the grep command with options and flags on the virtual machines.  
 def callGrepOnVM(grepCall):
 	pattern = grepCall.split(" ")
 	pattern.insert(0,u'grep')
