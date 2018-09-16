@@ -86,11 +86,19 @@ def check_grep_output_on_servers():
 def check_client_py_on_servers():
 	nodeCount = []
 	for i in range(0, 10):
-		outputCount = subprocess.check_output(['python3.6 dlq_client.py -e abc -e bca -e zazz'])[i]['count'])
-		nodeCount.append(outputCount)
 		wait = input("Please press enter once you set up the next server")
-	print nodeCount
+		outputCount = connect_to_server(['-e', 'abc', '-e', 'bca', '-e', 'zazz'])[i]['count']
+		nodeCount.append(outputCount)
+	print(nodeCount)
+	assert(nodeCount == [560, 563, 564, 562, 568, 574, 573, 570, 565, 565])
+	print("Client-Server Unit test passed")
 
 if __name__ == '__main__':
-	check_grep_output_on_servers()
+	which_test = input("1 for putting log files on vms, 2 for running the server unit test, 3 for running the client unit test: ")
+	if which_test == '1':
+		check_grep_output_on_servers()
+	elif which_test == '2':
+		run_multiple_servers()
+	elif which_test == '3':
+		check_client_py_on_servers()
 		
