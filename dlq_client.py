@@ -8,8 +8,8 @@ import copy
 SERVER_PORT = 12345
 MSGLEN = 4096
 
-def connect_to_server(pattern):
-    with open('./conf.json','r') as handle:
+def connect_to_server(pattern, filename='./conf.json'):
+    with open(filename,'r') as handle:
         nodes = json.loads(handle.read())
 
     for node in nodes:
@@ -58,7 +58,6 @@ def connect_to_server(pattern):
                 else:
                     print(node['name'] + " finished with " + str(node['count']) + " lines")
             break
-    print(nodes)
     return nodes
 	
 
