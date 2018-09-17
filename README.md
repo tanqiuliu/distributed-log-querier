@@ -9,3 +9,4 @@ python3.6 dlq_server.py
 python3.6 dlq_client.py <pattern>
 #### example:
 python3.6 dlq_client.py J6mVgP5q
+python3.6 dlq_client.py -e abc -e bca -e zaz
