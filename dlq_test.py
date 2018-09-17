@@ -165,7 +165,7 @@ if __name__ == '__main__':
 				failedLines.append(i + 1)
 				print("Unit test with the pattern : " + pattern + " : has failed\n")
 		for i in failedLines:
-			print("The test has failed on line : " + i)
+			print("The test has failed on line : " + str(i))
 		print("Unit test has passed " + str(count) +  " tests out of " + str(totalCount))
 
 		
