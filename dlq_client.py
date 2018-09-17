@@ -4,6 +4,7 @@ from Socket import *
 from functools import reduce
 import json
 import copy
+import time
 
 SERVER_PORT = 12345
 MSGLEN = 4096
@@ -71,7 +72,10 @@ def connect_to_server(pattern, filename='./conf.json', unittestmode=0):
 
 if __name__ == "__main__":
     pattern = sys.argv[1:]
+    start = time.time()
     connect_to_server(pattern)
+    end = time.time()
+    print("Query time: %.6fs" %(end - start))
 
     
 
