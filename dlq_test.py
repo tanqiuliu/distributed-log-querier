@@ -115,8 +115,30 @@ def check_client_pattern_on_servers(pattern):
 	assert(nodeCount == lineCount)
 	print("Client-Server Unit test passed")
 
+def check_client_pattern_on_servers_with_file(pattern):
+	nodeCount = []
+	lineCount = []
+	grepStart = 'grep -c ' + pattern + ' /home/mp1/vm'
+	print("===========================================================================================")
+	print("Running unit test on the pattern: " + pattern + " : on all vm logs")
+	print("===========================================================================================")
+	for i, vmNum in enumerate(vmNums):
+		try:
+			lineCount.append(int((subprocess.check_output(['ssh', 'dchen51@fa18-cs425-g45-{}.cs.illinois.edu'.format(vmNum), grepStart + str(i+1) + '.log'])).strip().decode('utf-8')))
+		except:
+			lineCount.append(0)
+	outputCount = connect_to_server(pattern.split(" "), unittestmode=1)
+	for node in outputCount:
+		nodeCount.append(node['count'])
+	print("The line count from local greps on each vm was:")
+	print(lineCount)
+	if(nodeCount == lineCount):
+		return True
+	else:
+		return False
+
 if __name__ == '__main__':
-	which_test = input("1 very frequent pattern, 2 frequent pattern, 3 rare pattern, 4 for more regular expressions, 5 for a pattern with no matches" )
+	which_test = input("1 very frequent pattern, 2 frequent pattern, 3 rare pattern, 4 for more regular expressions, 5 for a pattern with no matches, 6 to use a file full of valid grep commands : ")
 	if which_test == '1':
 		check_client_pattern_on_servers('2')
 	elif which_test == '2':
@@ -127,5 +149,24 @@ if __name__ == '__main__':
 		check_client_pattern_on_servers('-e ..00..')
 	elif which_test == '5':
 		check_client_pattern_on_servers('!')
+	elif which_test == '6':
+		f = open('unittestpatterns.log','r')
+		content = f.readlines()
+		content = [line.strip() for line in content] 
+		failedLines = []
+		count = 0
+		totalCount = 0
+		for i, pattern in enumerate(content):
+			totalCount += 1
+			if check_client_pattern_on_servers_with_file(pattern):
+				count +=1
+				print("Unit test with the pattern : " + pattern + " : has passed\n")
+			else:
+				failedLines.append(i + 1)
+				print("Unit test with the pattern : " + pattern + " : has failed\n")
+		for i in failedLines:
+			print("The test has failed on line : " + i)
+		print("Unit test has passed " + str(count) +  " tests out of " + str(totalCount))
+
 		
 		
