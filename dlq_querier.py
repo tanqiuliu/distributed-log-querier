@@ -65,14 +65,13 @@ def callGrepOnVM(grepCall):
 		if e.returncode  == 1:
 			yield
 		elif e.returncode == 2:
-			print("error code 2")
-			output = "No such file or directory error"
-			yield output + '\n'
+			yield
 
 
 
 if __name__ == '__main__':
 	grepCall = sys.argv[1:]
+	print(grepCall)
 	for output in callGrepOnVM(grepCall):
 		print(output)
 	
