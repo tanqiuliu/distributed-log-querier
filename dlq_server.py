@@ -1,6 +1,6 @@
 import socket
 import sys
-from dlq_querier import doQuery
+from dlq_querier import *
 from Socket import *
 
 PORT = 12345
@@ -12,6 +12,12 @@ def parser_msg(msg):
     filename = msg_d.split(' ')[1]
     return pattern, filename
 
+#Parses the grep options and flags from client to something readable for the server
+def parser_grep(grepcmd):
+	grepcmd_d = grepcmd.decode('utf-8')
+	return grepcmd_d
+								
+#Runs the server and waits for the connection to happen, then sends the output from the grep subprocess to the client.
 if __name__ == "__main__":
     s = TCPSocket()
     s.bind(('', PORT))
@@ -20,11 +26,17 @@ if __name__ == "__main__":
     while True:
         c, addr = s.accept()
         msg = c.sock.recv(BUF_SIZE)
-        pattern, filename = parser_msg(msg)
+        grep_cmd = parser_grep(msg)
         # do query
-        query_result = doQuery(pattern, filename)
-        c.send(query_result.encode())
+        print(grep_cmd)
+        #query_result = doQuery(pattern, filename)
+        for output in callGrepOnVM(grep_cmd):
+            try:
+                c.send(output.encode())
+            except:
+                continue
         c.close()
+        
 
 
 

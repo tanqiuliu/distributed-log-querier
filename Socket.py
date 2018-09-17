@@ -1,6 +1,7 @@
 import socket
 import select
 
+#The functions of this class are made to make it easier to work with the buffer for message sending very long files
 class TCPSocket:
 
     def __init__(self, sock=None):
@@ -23,6 +24,7 @@ class TCPSocket:
                 raise RuntimeError("socket connection broken")
             totalsent = totalsent + sent
 
+	#A fix to the message being sent from server to client using a buffer, or else the message will be sent cut off
     def recv(self, msgLen):
         chunks = []
         bytes_recd = 0
@@ -44,6 +46,7 @@ class TCPSocket:
         client_sock, client_info = self.sock.accept()
         return TCPSocket(client_sock), client_info
 
+	#Checks to see if there is more to be sent among server to client.  Uses select to run the client-server connection in parallel with each other
     def activityDetected(self, timeout = None):
         if timeout == None:
             ready_to_read, ready_to_write, in_error = select.select([self.sock], [], [])
